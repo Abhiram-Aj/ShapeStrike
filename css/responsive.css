@@ -1,0 +1,8 @@
+@media(max-width:520px){
+  .game-topbar{padding:.6rem .75rem}
+  .turn-player{font-size:1.2rem}
+  .score-card{min-width:90px;padding:.5rem .6rem}
+  .score-name{font-size:.6rem}
+  .score-pts{font-size:1.2rem}
+  .cell{font-size:.75rem}
+}
