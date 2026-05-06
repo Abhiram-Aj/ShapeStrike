@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShapeStrike</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#f2efe9;
+  --black:#111;
+  --mid:#666;
+  --light:#ccc;
+  --lighter:#e8e4dc;
+  --white:#fff;
+  --border:2px solid #111;
+}
+
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Mono',monospace;
+  background:var(--bg);
+  color:var(--black);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ===== SCREENS ===== */
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.active{display:flex}
+
+/* ===== HOME SCREEN ===== */
+#screen-home{
+  background:var(--black);
+  color:var(--bg);
+  position:relative;
+  overflow:hidden;
+}
+
+.home-bg-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(242,239,233,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(242,239,233,.05) 1px, transparent 1px);
+  background-size:40px 40px;
+  pointer-events:none;
+}
+
+.home-shapes-bg{
+  position:absolute;inset:0;pointer-events:none;overflow:hidden;
+}
+.home-shapes-bg span{
+  position:absolute;font-size:120px;opacity:.04;
+  font-family:'DM Mono',monospace;
+  animation:floatShape 20s infinite linear;
+}
+.home-shapes-bg span:nth-child(1){top:-5%;left:10%;animation-delay:0s}
+.home-shapes-bg span:nth-child(2){top:20%;left:75%;animation-delay:5s;font-size:90px}
+.home-shapes-bg span:nth-child(3){top:60%;left:5%;animation-delay:10s;font-size:150px}
+.home-shapes-bg span:nth-child(4){top:80%;left:85%;animation-delay:3s;font-size:80px}
+.home-shapes-bg span:nth-child(5){top:40%;left:45%;animation-delay:7s;font-size:110px}
+
+@keyframes floatShape{
+  0%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(-30px) rotate(10deg)}
+  100%{transform:translateY(0) rotate(0deg)}
+}
+
+.home-inner{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:3rem 2rem;position:relative;z-index:1;
+  gap:1.5rem;
+}
+
+.home-eyebrow{
+  font-size:.65rem;letter-spacing:.35em;
+  color:rgba(242,239,233,.5);text-transform:uppercase;
+}
+
+.home-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(5rem,15vw,11rem);
+  line-height:.9;letter-spacing:-.01em;
+  text-align:center;
+  color:var(--bg);
+}
+
+.home-title span{color:rgba(242,239,233,.2)}
+
+.home-shapes-row{
+  display:flex;gap:1.5rem;font-size:2rem;
+  color:rgba(242,239,233,.6);
+  margin:-.5rem 0;
+}
+
+.home-tagline{
+  font-size:.8rem;color:rgba(242,239,233,.5);
+  text-align:center;max-width:380px;line-height:1.6;
+  letter-spacing:.02em;
+}
+
+.btn-play{
+  margin-top:.5rem;
+  background:var(--bg);
+  color:var(--black);
+  border:none;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.4rem;letter-spacing:.12em;
+  padding:1rem 3.5rem;
+  cursor:pointer;
+  position:relative;overflow:hidden;
+  transition:transform .15s,box-shadow .15s;
+  clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+}
+.btn-play:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.btn-play:active{transform:translateY(0)}
+
+.home-how{
+  width:100%;max-width:700px;margin-top:2rem;
+  border:1px solid rgba(242,239,233,.15);
+}
+.home-how summary{
+  padding:.9rem 1.2rem;cursor:pointer;
+  font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(242,239,233,.5);list-style:none;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.home-how summary::-webkit-details-marker{display:none}
+.home-how summary::after{content:'▼';font-size:.6rem;transition:transform .2s}
+.home-how[open] summary::after{transform:rotate(180deg)}
+.how-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:1px;background:rgba(242,239,233,.15);
+  margin:1px;
+}
+.how-card{
+  background:rgba(242,239,233,.04);
+  padding:1.1rem 1.2rem;
+}
+.how-card h4{
+  font-size:.7rem;letter-spacing:.2em;
+  color:rgba(242,239,233,.4);text-transform:uppercase;margin-bottom:.5rem;
+}
+.how-card p{font-size:.75rem;color:rgba(242,239,233,.65);line-height:1.6}
+
+.home-footer{
+  padding:1.2rem 2rem;
+  border-top:1px solid rgba(242,239,233,.1);
+  font-size:.65rem;letter-spacing:.1em;
+  color:rgba(242,239,233,.3);
+  text-align:center;
+  position:relative;z-index:1;
+}
+.home-footer a{color:rgba(242,239,233,.5);text-decoration:none}
+.home-footer a:hover{color:var(--bg)}
+
+/* ===== FLOW SCREENS (count, mode, setup) ===== */
+.flow-screen{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:3rem 1.5rem;gap:2rem;
+}
+
+.flow-back{
+  position:fixed;top:1.5rem;left:1.5rem;
+  background:transparent;border:var(--border);
+  font-family:'DM Mono',monospace;font-size:.7rem;
+  letter-spacing:.12em;padding:.5rem 1rem;cursor:pointer;
+  z-index:100;transition:background .15s,color .15s;
+}
+.flow-back:hover{background:var(--black);color:var(--bg)}
+
+.flow-label{
+  font-size:.65rem;letter-spacing:.35em;text-transform:uppercase;
+  color:var(--mid);
+}
+.flow-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2.5rem,8vw,5rem);
+  letter-spacing:.02em;text-align:center;line-height:1;
+}
+
+.choice-grid{
+  display:grid;gap:1px;background:var(--black);border:var(--border);
+  width:100%;max-width:600px;
+}
+.choice-grid.cols-2{grid-template-columns:1fr 1fr}
+.choice-grid.cols-1{grid-template-columns:1fr}
+
+.choice-btn{
+  background:var(--bg);
+  padding:2rem 1.5rem;
+  cursor:pointer;border:none;text-align:left;
+  transition:background .15s,color .15s;
+  position:relative;overflow:hidden;
+}
+.choice-btn:hover{background:var(--black);color:var(--bg)}
+.choice-btn .cb-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:3.5rem;line-height:1;color:var(--light);
+  transition:color .15s;
+}
+.choice-btn:hover .cb-num{color:rgba(242,239,233,.2)}
+.choice-btn .cb-title{
+  font-family:'Bebas Neue',sans-serif;font-size:1.4rem;
+  letter-spacing:.05em;margin-top:.3rem;display:block;
+}
+.choice-btn .cb-desc{
+  font-size:.7rem;color:var(--mid);line-height:1.5;
+  margin-top:.4rem;display:block;transition:color .15s;
+}
+.choice-btn:hover .cb-desc{color:rgba(242,239,233,.5)}
+
+/* ===== SETUP SCREEN ===== */
+.setup-form{width:100%;max-width:640px;display:flex;flex-direction:column;gap:0}
+
+.player-row{
+  display:grid;grid-template-columns:auto 1fr auto;
+  align-items:center;gap:0;
+  border:var(--border);border-bottom:none;
+  background:var(--white);
+  transition:background .1s;
+}
+.player-row:last-of-type{border-bottom:var(--border)}
+.player-row:focus-within{background:#f9f6f0}
+.player-row.ai-player{background:#f5f2ed}
+
+.player-num{
+  font-family:'Bebas Neue',sans-serif;font-size:2.5rem;
+  width:60px;text-align:center;border-right:var(--border);
+  color:var(--light);line-height:1;padding:.8rem .5rem;
+  align-self:stretch;display:flex;align-items:center;justify-content:center;
+}
+
+.player-name-input{
+  font-family:'DM Mono',monospace;font-size:.85rem;
+  border:none;outline:none;background:transparent;
+  padding:.9rem 1rem;width:100%;
+  letter-spacing:.03em;
+}
+.player-name-input::placeholder{color:var(--light)}
+.player-row.ai-player .player-name-input{
+  color:var(--mid);
+  cursor:default;
+}
+
+.player-shapes{
+  display:flex;gap:0;border-left:var(--border);align-self:stretch;
+}
+.shape-pick-btn{
+  width:46px;height:100%;border:none;
+  background:transparent;cursor:pointer;
+  font-size:1.2rem;transition:background .15s;
+  display:flex;align-items:center;justify-content:center;
+  border-left:1px solid var(--lighter);position:relative;
+}
+.shape-pick-btn:first-child{border-left:none}
+.shape-pick-btn:hover:not(:disabled){background:var(--lighter)}
+.shape-pick-btn.selected{background:var(--black);color:var(--bg)}
+.shape-pick-btn:disabled{opacity:.25;cursor:not-allowed}
+.shape-pick-btn .taken-x{
+  position:absolute;top:2px;right:3px;font-size:.55rem;
+  color:var(--mid);
+}
+
+.ai-toggle{
+  display:flex;align-items:center;gap:.6rem;padding:.9rem 1rem;
+  border-left:var(--border);cursor:pointer;
+  background:transparent;border:none;font-family:'DM Mono',monospace;
+  font-size:.8rem;user-select:none;width:100%;
+}
+.ai-toggle input[type="checkbox"]{
+  width:18px;height:18px;cursor:pointer;
+}
+.ai-toggle-label{color:var(--mid);transition:color .15s}
+.player-row.ai-player .ai-toggle-label{color:#27ae60}
+
+.btn-start{
+  margin-top:1.5rem;
+  background:var(--black);color:var(--bg);
+  border:none;font-family:'Bebas Neue',sans-serif;
+  font-size:1.2rem;letter-spacing:.12em;
+  padding:1.1rem;cursor:pointer;
+  width:100%;transition:opacity .15s;
+}
+.btn-start:hover{opacity:.85}
+.btn-start:disabled{opacity:.3;cursor:not-allowed}
+
+/* ===== GAME SCREEN ===== */
+#screen-game{
+  display:none;flex-direction:column;min-height:100vh;
+}
+#screen-game.active{display:flex}
+
+.game-topbar{
+  background:var(--black);color:var(--bg);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.75rem 1.25rem;gap:1rem;flex-wrap:wrap;
+  border-bottom:3px solid var(--black);
+  position:sticky;top:0;z-index:50;
+}
+.topbar-logo{
+  font-family:'Bebas Neue',sans-serif;font-size:1.3rem;
+  letter-spacing:.08em;opacity:.4;white-space:nowrap;
+}
+.topbar-turn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:.2rem;
+}
+.turn-label{
+  font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;
+  opacity:.5;
+}
+.turn-player{
+  font-family:'Bebas Neue',sans-serif;font-size:1.6rem;
+  letter-spacing:.05em;
+}
+.turn-ai-indicator{
+  font-size:.65rem;color:#27ae60;letter-spacing:.1em;text-transform:uppercase;
+  margin-top:.1rem;
+}
+.turn-shape-fixed{
+  font-size:1.1rem;opacity:.8;margin-top:-.15rem;
+}
+.turn-shape-free{
+  display:flex;gap:.4rem;align-items:center;margin-top:.1rem;flex-wrap:wrap;
+  justify-content:center;
+}
+.free-shape-btn{
+  background:rgba(242,239,233,.1);border:1px solid rgba(242,239,233,.3);
+  color:var(--bg);font-size:1.1rem;
+  width:38px;height:38px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .15s,border-color .15s;
+  border-radius:2px;
+  font-family:'DM Mono',monospace;
+}
+.free-shape-btn:hover{background:rgba(242,239,233,.2)}
+.free-shape-btn.selected{
+  background:var(--bg);color:var(--black);
+  border-color:var(--bg);
+}
+.free-shape-btn:disabled{opacity:.4;cursor:not-allowed}
+.topbar-counter{
+  font-family:'Bebas Neue',sans-serif;font-size:1rem;
+  opacity:.4;letter-spacing:.05em;white-space:nowrap;text-align:right;
+}
+
+.scoreboard{
+  background:var(--lighter);
+  display:flex;gap:0;flex-wrap:wrap;
+  border-bottom:var(--border);
+}
+.score-card{
+  flex:1;min-width:120px;
+  padding:.65rem 1rem;
+  border-right:1px solid var(--light);
+  display:flex;align-items:center;gap:.6rem;
+  transition:background .2s;
+  position:relative;
+}
+.score-card:last-child{border-right:none}
+.score-card.active-player{background:var(--black);color:var(--bg)}
+.score-card.ai-player::after{
+  content:'🤖';font-size:.7rem;position:absolute;top:.3rem;right:.4rem;
+}
+.score-shape{font-size:1.1rem}
+.score-info{flex:1;overflow:hidden}
+.score-name{
+  font-size:.7rem;font-weight:500;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.score-pts{
+  font-family:'Bebas Neue',sans-serif;font-size:1.5rem;
+  line-height:1;
+}
+.score-pts-label{font-size:.55rem;opacity:.5;letter-spacing:.08em;margin-left:.15rem}
+
+.game-body{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:flex-start;
+  padding:1.5rem 1rem;
+  overflow:auto;
+  position:relative;
+}
+
+.ai-thinking{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-size:2rem;animation:bounce .6s infinite;
+  z-index:10;
+  pointer-events:none;
+}
+@keyframes bounce{
+  0%,100%{opacity:.3;transform:translate(-50%,-50%)}
+  50%{opacity:1;transform:translate(-50%,-60%)}
+}
+
+.board-wrap{overflow:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+
+#game-board{
+  display:grid;
+  background:var(--black);
+  gap:1px;
+  border:2px solid var(--black);
+  width:fit-content;
+  margin:0 auto;
+}
+
+.cell{
+  background:var(--white);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  font-size:1rem;
+  transition:background .1s;
+  user-select:none;
+  position:relative;
+}
+.cell:hover:not(.filled){background:#f0ede8}
+.cell.filled{cursor:default}
+.cell .cell-sym{
+  display:inline-block;
+  animation:popIn .2s cubic-bezier(.175,.885,.32,1.275) both;
+}
+@keyframes popIn{
+  0%{transform:scale(0) rotate(-10deg);opacity:0}
+  100%{transform:scale(1) rotate(0deg);opacity:1}
+}
+
+.hint-msg{
+  font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--mid);margin-bottom:.8rem;text-align:center;
+}
+
+/* ===== SCORE LINE FLASH ===== */
+.cell.score-flash{animation:scoreFlash .6s ease both}
+@keyframes scoreFlash{
+  0%{background:#111}
+  40%{background:#f9f600}
+  100%{background:var(--white)}
+}
+
+/* ===== GAME OVER ===== */
+#gameover-overlay{
+  display:none;position:fixed;inset:0;z-index:200;
+  background:rgba(17,17,17,.92);
+  align-items:center;justify-content:center;flex-direction:column;
+  gap:1.5rem;padding:2rem;
+}
+#gameover-overlay.visible{display:flex}
+
+.go-inner{
+  background:var(--bg);
+  padding:3rem 2.5rem;
+  max-width:480px;width:100%;
+  border:3px solid var(--black);
+  text-align:center;display:flex;flex-direction:column;gap:1rem;
+  animation:slideUp .35s cubic-bezier(.175,.885,.32,1.275) both;
+}
+@keyframes slideUp{
+  from{transform:translateY(40px);opacity:0}
+  to{transform:translateY(0);opacity:1}
+}
+.go-eyebrow{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--mid)}
+.go-crown{font-size:3rem;margin:-.5rem 0}
+.go-winner{font-family:'Bebas Neue',sans-serif;font-size:3.2rem;line-height:1}
+.go-score{font-size:.8rem;color:var(--mid)}
+
+.go-results{
+  display:grid;gap:1px;background:var(--light);border:1px solid var(--light);
+  margin-top:.5rem;
+}
+.go-row{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--white);padding:.7rem 1rem;gap:.5rem;
+}
+.go-row.winner{background:var(--black);color:var(--bg)}
+.go-row-name{font-size:.8rem;display:flex;align-items:center;gap:.5rem}
+.go-row-pts{font-family:'Bebas Neue',sans-serif;font-size:1.5rem}
+
+.btn-again{
+  background:var(--black);color:var(--bg);
+  border:none;font-family:'Bebas Neue',sans-serif;
+  font-size:1.1rem;letter-spacing:.12em;
+  padding:.9rem 2.5rem;cursor:pointer;transition:opacity .15s;
+}
+.btn-again:hover{opacity:.8}
+
+/* ===== ANIMATIONS ===== */
+.fade-in{animation:fadeIn .3s ease both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:520px){
+  .game-topbar{padding:.6rem .75rem}
+  .turn-player{font-size:1.2rem}
+  .score-card{min-width:90px;padding:.5rem .6rem}
+  .score-name{font-size:.6rem}
+  .score-pts{font-size:1.2rem}
+  .cell{font-size:.75rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== HOME SCREEN ===================== -->
+<div id="screen-home" class="screen active">
+  <div class="home-bg-grid"></div>
+  <div class="home-shapes-bg" aria-hidden="true">
+    <span>●</span><span>■</span><span>▲</span><span>★</span><span>●</span>
+  </div>
+  <div class="home-inner fade-in">
+    <span class="home-eyebrow">Multiplayer Strategy · 3–4 Players</span>
+    <h1 class="home-title">SHAPE<br><span>STR</span>IKE</h1>
+    <div class="home-shapes-row" aria-hidden="true">
+      <span>●</span><span>■</span><span>▲</span><span>★</span>
+    </div>
+    <p class="home-tagline">Line up three matching shapes to score. Outsmart your rivals on a massive grid. Last player standing with the most lines wins.</p>
+    <button class="btn-play" onclick="goToCount()">PLAY</button>
+
+    <details class="home-how">
+      <summary>How To Play</summary>
+      <div class="how-grid">
+        <div class="how-card">
+          <h4>Objective</h4>
+          <p>Place shapes on the grid. Form 3 of the same shape in a row — horizontal, vertical, or diagonal — to score a point.</p>
+        </div>
+        <div class="how-card">
+          <h4>Turns</h4>
+          <p>Players take turns one at a time. Click any empty cell to place your shape. The board fills up until someone wins.</p>
+        </div>
+        <div class="how-card">
+          <h4>Fixed Mode</h4>
+          <p>Each player picks one shape before the game. That shape is yours for the entire match.</p>
+        </div>
+        <div class="how-card">
+          <h4>Free Mode</h4>
+          <p>No assigned shapes. Each turn, choose which shape to place from all available shapes — adds a tactical layer.</p>
+        </div>
+        <div class="how-card">
+          <h4>Scoring</h4>
+          <p>Completing a line of 3 matching shapes scores 1 point — even if the same cell is part of multiple lines.</p>
+        </div>
+        <div class="how-card">
+          <h4>Winner</h4>
+          <p>When the board is full, the player with the most points wins. Ties are possible — fight for every line!</p>
+        </div>
+      </div>
+    </details>
+  </div>
+  <footer class="home-footer">
+    Game made by <a href="https://github.com/abhiram-aj" target="_blank" rel="noopener">abhiramaj</a>
+  </footer>
+</div>
+
+<!-- ===================== PLAYER COUNT SCREEN ===================== -->
+<div id="screen-count" class="screen">
+  <button class="flow-back" onclick="showScreen('home')">← BACK</button>
+  <div class="flow-screen fade-in">
+    <span class="flow-label">Step 1 of 4</span>
+    <h2 class="flow-title">HOW MANY<br>PLAYERS?</h2>
+    <div class="choice-grid cols-2" style="max-width:520px">
+      <button class="choice-btn" onclick="selectCount(3)">
+        <div class="cb-num">3</div>
+        <span class="cb-title">Players</span>
+        <span class="cb-desc">Shapes: ● ■ ▲</span>
+      </button>
+      <button class="choice-btn" onclick="selectCount(4)">
+        <div class="cb-num">4</div>
+        <span class="cb-title">Players</span>
+        <span class="cb-desc">Shapes: ● ■ ▲ ★</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== GRID SIZE SCREEN ===================== -->
+<div id="screen-grid" class="screen">
+  <button class="flow-back" onclick="showScreen('count')">← BACK</button>
+  <div class="flow-screen fade-in">
+    <span class="flow-label">Step 2 of 4</span>
+    <h2 class="flow-title">GRID SIZE</h2>
+    <div class="choice-grid cols-1" style="max-width:480px" id="grid-size-options"></div>
+  </div>
+</div>
+
+<!-- ===================== GAME MODE SCREEN ===================== -->
+<div id="screen-mode" class="screen">
+  <button class="flow-back" onclick="showScreen('grid')">← BACK</button>
+  <div class="flow-screen fade-in">
+    <span class="flow-label">Step 3 of 4</span>
+    <h2 class="flow-title">GAME MODE</h2>
+    <div class="choice-grid cols-1" style="max-width:540px">
+      <button class="choice-btn" onclick="selectMode('fixed')">
+        <div style="display:flex;align-items:center;gap:.8rem">
+          <span style="font-size:2rem">⊕</span>
+          <span class="cb-title" style="font-size:1.3rem">Fixed Shape Mode</span>
+        </div>
+        <span class="cb-desc" style="margin-top:.6rem;font-size:.75rem">Each player selects one unique shape before the game starts. That shape stays yours for the entire match. Strategy focuses on blocking opponents and building your own lines.</span>
+      </button>
+      <button class="choice-btn" onclick="selectMode('free')" style="border-top:none">
+        <div style="display:flex;align-items:center;gap:.8rem">
+          <span style="font-size:2rem">◈</span>
+          <span class="cb-title" style="font-size:1.3rem">Free Shape Mode</span>
+        </div>
+        <span class="cb-desc" style="margin-top:.6rem;font-size:.75rem">No pre-assigned shapes. Each turn, you choose which shape to place from all available options. Adds a deeper tactical layer — complete your lines or deny others theirs.</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SETUP SCREEN ===================== -->
+<div id="screen-setup" class="screen">
+  <button class="flow-back" onclick="showScreen('mode')">← BACK</button>
+  <div class="flow-screen fade-in">
+    <span class="flow-label">Step 4 of 4</span>
+    <h2 class="flow-title" id="setup-title">PLAYER SETUP</h2>
+    <div class="setup-form" id="setup-form"></div>
+    <button class="btn-start" id="btn-start" onclick="startGame()" disabled>START GAME</button>
+  </div>
+</div>
+
+<!-- ===================== GAME SCREEN ===================== -->
+<div id="screen-game" class="screen">
+  <div class="game-topbar">
+    <span class="topbar-logo">SHAPE<wbr>STRIKE</span>
+    <div class="topbar-turn">
+      <span class="turn-label">Current Turn</span>
+      <span class="turn-player" id="turn-player-name">—</span>
+      <div id="turn-shape-area"></div>
+      <div class="turn-ai-indicator" id="turn-ai-indicator" style="display:none">⚙ AI THINKING</div>
+    </div>
+    <div class="topbar-counter" id="turn-counter">Turn 1</div>
+  </div>
+
+  <div class="scoreboard" id="scoreboard"></div>
+
+  <div class="game-body">
+    <div class="hint-msg" id="hint-msg"></div>
+    <div class="board-wrap">
+      <div id="game-board"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== GAME OVER OVERLAY ===================== -->
+<div id="gameover-overlay">
+  <div class="go-inner">
+    <span class="go-eyebrow">Board Complete · Final Results</span>
+    <div class="go-crown">★</div>
+    <div class="go-winner" id="go-winner-name">Player</div>
+    <div class="go-score" id="go-winner-score">wins with 12 points</div>
+    <div class="go-results" id="go-results"></div>
+    <button class="btn-again" onclick="restartGame()">PLAY AGAIN</button>
+  </div>
+</div>
+
+<script>
+// ===================== CONSTANTS =====================
+const SHAPES = {
+  circle:   { sym:'●', label:'Circle'   },
+  square:   { sym:'■', label:'Square'   },
+  triangle: { sym:'▲', label:'Triangle' },
+  star:     { sym:'★', label:'Star'     },
+};
+const SHAPES_3P = ['circle','square','triangle'];
+const SHAPES_4P = ['circle','square','triangle','star'];
+
+// ===================== STATE =====================
+let G = {
+  playerCount: 3,
+  gameMode: 'fixed',
+  players: [],      // [{name, shape, score, isAI}]
+  board: [],        // 2D array of null | {shape, playerIndex}
+  boardSize: 20,
+  currentPlayer: 0,
+  scoredLines: new Set(),
+  selectedShape: null,
+  turnCount: 1,
+  gameOver: false,
+  aiThinking: false,
+};
+
+let cellEls = [];  // 2D array of DOM elements
+
+// ===================== SCREEN MANAGEMENT =====================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById('screen-' + id);
+  el.classList.add('active');
+  // Re-trigger fade-in
+  const inner = el.querySelector('.flow-screen, .home-inner');
+  if (inner) { inner.classList.remove('fade-in'); void inner.offsetWidth; inner.classList.add('fade-in'); }
+}
+
+function goToCount() { showScreen('count'); }
+
+function selectCount(n) {
+  G.playerCount = n;
+  showScreen('grid');
+  buildGridOptions();
+}
+
+// ===================== GRID SIZE =====================
+const GRID_SIZES = [10, 15, 20, 25, 30];
+const GRID_DESCS = {
+  10: 'Quick game · 100 cells · Fast & fierce',
+  15: 'Short match · 225 cells · Warm-up mode',
+  20: 'Standard · 400 cells · Balanced strategy',
+  25: 'Extended · 625 cells · Deep tactics',
+  30: 'Marathon · 900 cells · Ultimate challenge',
+};
+
+function buildGridOptions() {
+  const container = document.getElementById('grid-size-options');
+  container.innerHTML = '';
+  GRID_SIZES.forEach((sz, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    if (idx > 0) btn.style.borderTop = 'none';
+    btn.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem">
+        <div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;line-height:1;letter-spacing:.05em">${sz} × ${sz}</div>
+          <span class="cb-desc" style="margin-top:.3rem">${GRID_DESCS[sz]}</span>
+        </div>
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--light);white-space:nowrap">${sz*sz} CELLS</span>
+      </div>`;
+    btn.addEventListener('click', () => selectGridSize(sz));
+    container.appendChild(btn);
+  });
+}
+
+function selectGridSize(sz) {
+  G.boardSize = sz;
+  showScreen('mode');
+}
+
+function selectMode(mode) {
+  G.gameMode = mode;
+  showScreen('setup');
+  buildSetupForm();
+}
+
+// ===================== SETUP FORM =====================
+function buildSetupForm() {
+  const shapes = G.playerCount === 3 ? SHAPES_3P : SHAPES_4P;
+  const form = document.getElementById('setup-form');
+  const title = document.getElementById('setup-title');
+  title.textContent = G.gameMode === 'fixed' ? 'PLAYER SETUP' : 'PLAYER NAMES';
+
+  form.innerHTML = '';
+
+  for (let i = 0; i < G.playerCount; i++) {
+    const row = document.createElement('div');
+    row.className = 'player-row';
+    row.dataset.player = i;
+    row.dataset.isAi = 'false';
+
+    const num = document.createElement('div');
+    num.className = 'player-num';
+    num.textContent = i + 1;
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'player-name-input';
+    input.placeholder = `Player ${i + 1} name`;
+    input.maxLength = 18;
+    input.dataset.player = i;
+    input.addEventListener('input', checkStartReady);
+
+    row.appendChild(num);
+    row.appendChild(input);
+
+    if (G.gameMode === 'fixed') {
+      const shapePicker = document.createElement('div');
+      shapePicker.className = 'player-shapes';
+      shapePicker.dataset.player = i;
+
+      shapes.forEach(sh => {
+        const btn = document.createElement('button');
+        btn.className = 'shape-pick-btn';
+        btn.type = 'button';
+        btn.dataset.shape = sh;
+        btn.dataset.player = i;
+        btn.title = SHAPES[sh].label;
+        btn.textContent = SHAPES[sh].sym;
+        btn.addEventListener('click', () => pickShape(i, sh));
+        shapePicker.appendChild(btn);
+      });
+
+      row.appendChild(shapePicker);
+    } else {
+      // AI toggle for free mode
+      const aiToggle = document.createElement('label');
+      aiToggle.className = 'ai-toggle';
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.dataset.player = i;
+      checkbox.addEventListener('change', (e) => toggleAI(i, e.target.checked));
+      const label = document.createElement('span');
+      label.className = 'ai-toggle-label';
+      label.textContent = 'AI';
+      aiToggle.appendChild(checkbox);
+      aiToggle.appendChild(label);
+      row.appendChild(aiToggle);
+    }
+
+    // AI toggle for fixed mode (to the right of shape picker)
+    if (G.gameMode === 'fixed') {
+      const aiToggle = document.createElement('label');
+      aiToggle.className = 'ai-toggle';
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.dataset.player = i;
+      checkbox.addEventListener('change', (e) => toggleAI(i, e.target.checked));
+      const label = document.createElement('span');
+      label.className = 'ai-toggle-label';
+      label.textContent = 'AI';
+      aiToggle.appendChild(checkbox);
+      aiToggle.appendChild(label);
+      row.appendChild(aiToggle);
+    }
+
+    form.appendChild(row);
+  }
+
+  checkStartReady();
+}
+
+function toggleAI(playerIndex, isAI) {
+  const row = document.querySelector(`.player-row[data-player="${playerIndex}"]`);
+  const input = row.querySelector('.player-name-input');
+  
+  if (isAI) {
+    row.classList.add('ai-player');
+    row.dataset.isAi = 'true';
+    input.value = `AI ${playerIndex + 1}`;
+    input.disabled = true;
+  } else {
+    row.classList.remove('ai-player');
+    row.dataset.isAi = 'false';
+    input.value = '';
+    input.disabled = false;
+  }
+  
+  checkStartReady();
+}
+
+function pickShape(playerIndex, shape) {
+  const shapes = G.playerCount === 3 ? SHAPES_3P : SHAPES_4P;
+
+  // Gather current selections from other players
+  const taken = {};
+  document.querySelectorAll('.shape-pick-btn.selected').forEach(btn => {
+    const p = parseInt(btn.dataset.player);
+    if (p !== playerIndex) taken[btn.dataset.shape] = p;
+  });
+
+  // If this player already has a selection, clear it
+  const prev = document.querySelector(`.shape-pick-btn.selected[data-player="${playerIndex}"]`);
+  if (prev) prev.classList.remove('selected');
+
+  // If clicking the same button as current, just deselect
+  const clicked = document.querySelector(`.shape-pick-btn[data-player="${playerIndex}"][data-shape="${shape}"]`);
+  if (prev && prev.dataset.shape === shape) {
+    // Deselected — refresh other pickers
+    refreshShapePickers();
+    checkStartReady();
+    return;
+  }
+
+  clicked.classList.add('selected');
+  refreshShapePickers();
+  checkStartReady();
+}
+
+function refreshShapePickers() {
+  const shapes = G.playerCount === 3 ? SHAPES_3P : SHAPES_4P;
+  const takenByPlayer = {};
+  document.querySelectorAll('.shape-pick-btn.selected').forEach(btn => {
+    takenByPlayer[btn.dataset.shape] = parseInt(btn.dataset.player);
+  });
+
+  for (let i = 0; i < G.playerCount; i++) {
+    shapes.forEach(sh => {
+      const btn = document.querySelector(`.shape-pick-btn[data-player="${i}"][data-shape="${sh}"]`);
+      if (!btn) return;
+      const takenBy = takenByPlayer[sh];
+      const isMine = btn.classList.contains('selected');
+      if (takenBy !== undefined && takenBy !== i) {
+        btn.disabled = true;
+        // Show which player took it
+        let x = btn.querySelector('.taken-x');
+        if (!x) { x = document.createElement('span'); x.className = 'taken-x'; btn.appendChild(x); }
+        x.textContent = `P${takenBy+1}`;
+      } else {
+        btn.disabled = false;
+        const x = btn.querySelector('.taken-x');
+        if (x) x.remove();
+      }
+    });
+  }
+}
+
+function checkStartReady() {
+  const inputs = document.querySelectorAll('.player-name-input');
+  let allNamed = true;
+  inputs.forEach(inp => { 
+    if (inp.disabled) return; // AI players don't need manual input
+    if (!inp.value.trim()) allNamed = false; 
+  });
+
+  let allShaped = true;
+  if (G.gameMode === 'fixed') {
+    for (let i = 0; i < G.playerCount; i++) {
+      const isAI = document.querySelector(`.player-row[data-player="${i}"]`).dataset.isAi === 'true';
+      if (!isAI && !document.querySelector(`.shape-pick-btn.selected[data-player="${i}"]`)) {
+        allShaped = false; break;
+      }
+    }
+  }
+
+  document.getElementById('btn-start').disabled = !(allNamed && allShaped);
+}
+
+// ===================== START GAME =====================
+function startGame() {
+  const shapes = G.playerCount === 3 ? SHAPES_3P : SHAPES_4P;
+  G.players = [];
+  for (let i = 0; i < G.playerCount; i++) {
+    const row = document.querySelector(`.player-row[data-player="${i}"]`);
+    const isAI = row.dataset.isAi === 'true';
+    const name = row.querySelector('.player-name-input').value.trim() || `Player ${i+1}`;
+    let shape = null;
+    if (G.gameMode === 'fixed') {
+      const btn = document.querySelector(`.shape-pick-btn.selected[data-player="${i}"]`);
+      shape = btn ? btn.dataset.shape : shapes[i];
+    }
+    G.players.push({ name, shape, score: 0, isAI });
+  }
+
+  G.board = Array.from({ length: G.boardSize }, () => Array(G.boardSize).fill(null));
+  G.currentPlayer = 0;
+  G.scoredLines = new Set();
+  G.selectedShape = G.gameMode === 'fixed' ? G.players[0].shape : null;
+  G.turnCount = 1;
+  G.gameOver = false;
+  G.aiThinking = false;
+
+  showScreen('game');
+  initBoard();
+  updateTopBar();
+  updateScoreboard();
+  
+  // Start AI turn if needed
+  if (G.players[0].isAI) {
+    scheduleAIMove();
+  }
+}
+
+// ===================== AI LOGIC =====================
+function getEmptyCells() {
+  const empty = [];
+  for (let r = 0; r < G.boardSize; r++) {
+    for (let c = 0; c < G.boardSize; c++) {
+      if (G.board[r][c] === null) {
+        empty.push([r, c]);
+      }
+    }
+  }
+  return empty;
+}
+
+function evaluateMove(r, c, shape) {
+  // Simulate the move
+  const oldCell = G.board[r][c];
+  G.board[r][c] = { shape, playerIndex: G.currentPlayer };
+  
+  const points = simulateCheckLines(r, c, shape);
+  
+  // Undo
+  G.board[r][c] = oldCell;
+  
+  return points;
+}
+
+function simulateCheckLines(r, c, shape) {
+  const size = G.boardSize;
+  const dirs = [
+    { dr:0, dc:1 },
+    { dr:1, dc:0 },
+    { dr:1, dc:1 },
+    { dr:1, dc:-1 },
+  ];
+  let points = 0;
+  const scored = new Set();
+
+  for (const dir of dirs) {
+    for (let offset = -2; offset <= 0; offset++) {
+      const sr = r + dir.dr * offset;
+      const sc = c + dir.dc * offset;
+      let valid = true;
+      const cells = [];
+
+      for (let i = 0; i < 3; i++) {
+        const nr = sr + dir.dr * i;
+        const nc = sc + dir.dc * i;
+        if (nr < 0 || nr >= size || nc < 0 || nc >= size) { valid = false; break; }
+        const cell = G.board[nr][nc];
+        if (!cell || cell.shape !== shape) { valid = false; break; }
+        cells.push([nr, nc]);
+      }
+
+      if (valid) {
+        const key = `${dir.dr}_${dir.dc}_${sr}_${sc}`;
+        if (!scored.has(key)) {
+          scored.add(key);
+          points++;
+        }
+      }
+    }
+  }
+
+  return points;
+}
+
+function countThreats(r, c, shape) {
+  // Count opponent lines that could be blocked
+  const size = G.boardSize;
+  const dirs = [
+    { dr:0, dc:1 },
+    { dr:1, dc:0 },
+    { dr:1, dc:1 },
+    { dr:1, dc:-1 },
+  ];
+  let threats = 0;
+
+  for (const dir of dirs) {
+    for (let offset = -2; offset <= 0; offset++) {
+      const sr = r + dir.dr * offset;
+      const sc = c + dir.dc * offset;
+      let opponentCount = 0;
+      let matchCount = 0;
+
+      for (let i = 0; i < 3; i++) {
+        const nr = sr + dir.dr * i;
+        const nc = sc + dir.dc * i;
+        if (nr < 0 || nr >= size || nc < 0 || nc >= size) { opponentCount = -1; break; }
+        const cell = G.board[nr][nc];
+        if (cell && cell.playerIndex !== G.currentPlayer && cell.shape === shape) {
+          opponentCount++;
+        } else if (!cell) {
+          matchCount++;
+        } else {
+          opponentCount = -1;
+          break;
+        }
+      }
+
+      if (opponentCount === 2 && matchCount === 1) {
+        threats++;
+      }
+    }
+  }
+
+  return threats;
+}
+
+function makeAIMove() {
+  const empty = getEmptyCells();
+  if (empty.length === 0) return null;
+
+  const shapes = G.playerCount === 3 ? SHAPES_3P : SHAPES_4P;
+  const currentPlayerShape = G.players[G.currentPlayer].shape;
+  
+  let bestScore = -1;
+  let bestMoves = [];
+
+  // If fixed mode, use only the player's shape
+  const shapesToTry = G.gameMode === 'fixed' ? [currentPlayerShape] : shapes;
+
+  if (G.gameMode === 'fixed') {
+    // Fixed mode: evaluate each empty cell
+    for (const [r, c] of empty) {
+      const points = evaluateMove(r, c, currentPlayerShape);
+      const threats = countThreats(r, c, currentPlayerShape);
+      const score = points * 10 + threats;
+
+      if (score > bestScore) {
+        bestScore = score;
+        bestMoves = [[r, c]];
+      } else if (score === bestScore) {
+        bestMoves.push([r, c]);
+      }
+    }
+  } else {
+    // Free mode: try different shapes
+    for (const shape of shapesToTry) {
+      for (const [r, c] of empty) {
+        const points = evaluateMove(r, c, shape);
+        const threats = countThreats(r, c, shape);
+        const score = points * 10 + threats;
+
+        if (score > bestScore) {
+          bestScore = score;
+          bestMoves = [[r, c, shape]];
+        } else if (score === bestScore) {
+          bestMoves.push([r, c, shape]);
+        }
+      }
+    }
+  }
+
+  if (bestMoves.length === 0) {
+    // Fallback: random move
+    const [r, c] = empty[Math.floor(Math.random() * empty.length)];
+    const shape = G.gameMode === 'fixed' ? currentPlayerShape : shapesToTry[Math.floor(Math.random() * shapesToTry.length)];
+    return [r, c, shape];
+  }
+
+  const move = bestMoves[Math.floor(Math.random() * bestMoves.length)];
+  if (move.length === 2) {
+    return [move[0], move[1], currentPlayerShape];
+  }
+  return move;
+}
+
+function scheduleAIMove() {
+  if (!G.players[G.currentPlayer].isAI || G.gameOver) return;
+  
+  G.aiThinking = true;
+  document.getElementById('turn-ai-indicator').style.display = 'block';
+  
+  setTimeout(() => {
+    const move = makeAIMove();
+    if (move) {
+      const [r, c, shape] = move;
+      G.selectedShape = shape;
+      performMove(r, c);
+    }
+    G.aiThinking = false;
+    document.getElementById('turn-ai-indicator').style.display = 'none';
+  }, 1000 + Math.random() * 500); // 1-1.5s delay for natural feel
+}
+
+// ===================== BOARD INIT =====================
+function initBoard() {
+  const size = G.boardSize;
+  // Scale cell size so the board stays comfortable on screen
+  const sizeMap = { 10: 48, 15: 36, 20: 28, 25: 23, 30: 20 };
+  const cellSize = sizeMap[size] || 24;
+
+  const board = document.getElementById('game-board');
+  board.style.gridTemplateColumns = `repeat(${size}, ${cellSize}px)`;
+  board.innerHTML = '';
+  cellEls = [];
+
+  for (let r = 0; r < size; r++) {
+    cellEls[r] = [];
+    for (let c = 0; c < size; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.style.width  = cellSize + 'px';
+      cell.style.height = cellSize + 'px';
+      cell.style.fontSize = (cellSize * 0.55) + 'px';
+      cell.addEventListener('click', () => handleCellClick(r, c));
+      board.appendChild(cell);
+      cellEls[r][c] = cell;
+    }
+  }
+}
+
+// ===================== TOP BAR + SCOREBOARD =====================
+function updateTopBar() {
+  const p = G.players[G.currentPlayer];
+  document.getElementById('turn-player-name').textContent = p.name.toUpperCase();
+  document.getElementById('turn-counter').textContent = `Turn ${G.turnCount} · ${G.boardSize}×${G.boardSize}`;
+
+  const shapeArea = document.getElementById('turn-shape-area');
+  shapeArea.innerHTML = '';
+
+  const shapes = G.playerCount === 3 ? SHAPES_3P : SHAPES_4P;
+
+  if (G.gameMode === 'fixed') {
+    const s = document.createElement('div');
+    s.className = 'turn-shape-fixed';
+    s.textContent = SHAPES[p.shape].sym + ' ' + SHAPES[p.shape].label;
+    shapeArea.appendChild(s);
+    G.selectedShape = p.shape;
+  } else {
+    if (p.isAI) {
+      // AI in free mode will select shape automatically
+      const s = document.createElement('div');
+      s.className = 'turn-shape-fixed';
+      s.textContent = '◈ Free Mode';
+      shapeArea.appendChild(s);
+    } else {
+      const row = document.createElement('div');
+      row.className = 'turn-shape-free';
+      shapes.forEach(sh => {
+        const btn = document.createElement('button');
+        btn.className = 'free-shape-btn' + (G.selectedShape === sh ? ' selected' : '');
+        btn.title = SHAPES[sh].label;
+        btn.textContent = SHAPES[sh].sym;
+        btn.disabled = G.aiThinking;
+        btn.addEventListener('click', () => {
+          if (!G.aiThinking) {
+            G.selectedShape = sh;
+            updateTopBar();
+            updateHintMsg();
+          }
+        });
+        row.appendChild(btn);
+      });
+      shapeArea.appendChild(row);
+    }
+  }
+
+  updateHintMsg();
+}
+
+function updateHintMsg() {
+  const hint = document.getElementById('hint-msg');
+  if (G.players[G.currentPlayer].isAI) {
+    hint.textContent = 'AI is making a move...';
+  } else if (G.gameMode === 'free') {
+    if (!G.selectedShape) {
+      hint.textContent = 'Select a shape above, then click a cell to place it';
+    } else {
+      hint.textContent = `Placing ${SHAPES[G.selectedShape].label} — click a cell`;
+    }
+  } else {
+    hint.textContent = 'Click any empty cell to place your shape';
+  }
+}
+
+function updateScoreboard() {
+  const sb = document.getElementById('scoreboard');
+  sb.innerHTML = '';
+  G.players.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'score-card' + (i === G.currentPlayer ? ' active-player' : '') + (p.isAI ? ' ai-player' : '');
+    card.id = `score-card-${i}`;
+
+    const shapeSym = G.gameMode === 'fixed'
+      ? SHAPES[p.shape].sym
+      : '◈';
+
+    card.innerHTML = `
+      <span class="score-shape">${shapeSym}</span>
+      <div class="score-info">
+        <div class="score-name">${p.name}</div>
+        <div class="score-pts">${p.score}<span class="score-pts-label">pts</span></div>
+      </div>`;
+    sb.appendChild(card);
+  });
+}
+
+// ===================== MOVE EXECUTION =====================
+function performMove(r, c) {
+  if (G.gameOver) return;
+  if (G.board[r][c] !== null) return;
+
+  const shape = G.selectedShape;
+  G.board[r][c] = { shape, playerIndex: G.currentPlayer };
+
+  // Render cell
+  const cell = cellEls[r][c];
+  cell.innerHTML = `<span class="cell-sym">${SHAPES[shape].sym}</span>`;
+  cell.classList.add('filled');
+  cell.style.cursor = 'default';
+
+  // Check lines
+  const pts = checkLines(r, c, shape);
+  if (pts > 0) {
+    G.players[G.currentPlayer].score += pts;
+    cell.classList.add('score-flash');
+  }
+
+  // Check if board is full
+  const totalCells = G.boardSize * G.boardSize;
+  const filledCount = G.board.flat().filter(x => x !== null).length;
+
+  if (filledCount >= totalCells) {
+    G.gameOver = true;
+    updateScoreboard();
+    showGameOver();
+    return;
+  }
+
+  // Next player
+  G.currentPlayer = (G.currentPlayer + 1) % G.playerCount;
+  G.turnCount++;
+  G.selectedShape = G.gameMode === 'fixed' ? G.players[G.currentPlayer].shape : null;
+
+  updateTopBar();
+  updateScoreboard();
+
+  // Schedule AI move if needed
+  if (G.players[G.currentPlayer].isAI) {
+    scheduleAIMove();
+  }
+}
+
+// ===================== CELL CLICK =====================
+function handleCellClick(r, c) {
+  if (G.gameOver) return;
+  if (G.aiThinking) return;
+  if (G.players[G.currentPlayer].isAI) return;
+  if (G.board[r][c] !== null) return;
+  if (G.gameMode === 'free' && !G.selectedShape) {
+    const hint = document.getElementById('hint-msg');
+    hint.style.color = '#c00';
+    hint.textContent = '⚠ Select a shape above first!';
+    setTimeout(() => { hint.style.color = ''; updateHintMsg(); }, 1500);
+    return;
+  }
+
+  performMove(r, c);
+}
+
+// ===================== LINE DETECTION =====================
+function checkLines(r, c, shape) {
+  const size = G.boardSize;
+  const dirs = [
+    { name:'H', dr:0, dc:1 },
+    { name:'V', dr:1, dc:0 },
+    { name:'D1', dr:1, dc:1 },
+    { name:'D2', dr:1, dc:-1 },
+  ];
+  let points = 0;
+  const newScored = [];
+
+  for (const dir of dirs) {
+    for (let offset = -2; offset <= 0; offset++) {
+      const sr = r + dir.dr * offset;
+      const sc = c + dir.dc * offset;
+      let valid = true;
+      const cells = [];
+
+      for (let i = 0; i < 3; i++) {
+        const nr = sr + dir.dr * i;
+        const nc = sc + dir.dc * i;
+        if (nr < 0 || nr >= size || nc < 0 || nc >= size) { valid = false; break; }
+        const cell = G.board[nr][nc];
+        if (!cell || cell.shape !== shape) { valid = false; break; }
+        cells.push([nr, nc]);
+      }
+
+      if (valid) {
+        const key = `${dir.name}_${sr}_${sc}`;
+        if (!G.scoredLines.has(key)) {
+          G.scoredLines.add(key);
+          points++;
+          newScored.push(cells);
+        }
+      }
+    }
+  }
+
+  // Flash all cells in newly scored lines
+  newScored.forEach(cells => {
+    cells.forEach(([nr, nc]) => {
+      const el = cellEls[nr][nc];
+      el.classList.remove('score-flash');
+      void el.offsetWidth;
+      el.classList.add('score-flash');
+    });
+  });
+
+  return points;
+}
+
+// ===================== GAME OVER =====================
+function showGameOver() {
+  const sorted = [...G.players].sort((a, b) => b.score - a.score);
+  const winner = sorted[0];
+  const isTie = sorted[0].score === sorted[1].score;
+
+  document.getElementById('go-winner-name').textContent =
+    isTie ? 'IT\'S A TIE!' : winner.name.toUpperCase();
+  document.getElementById('go-winner-score').textContent =
+    isTie
+      ? `Multiple players tied at ${winner.score} points`
+      : `wins with ${winner.score} point${winner.score !== 1 ? 's' : ''}`;
+
+  const results = document.getElementById('go-results');
+  results.innerHTML = '';
+  sorted.forEach((p, idx) => {
+    const row = document.createElement('div');
+    const isTopScore = p.score === sorted[0].score;
+    row.className = 'go-row' + (isTopScore ? ' winner' : '');
+    const shapeSym = G.gameMode === 'fixed' ? SHAPES[p.shape].sym : '◈';
+    row.innerHTML = `
+      <span class="go-row-name">
+        ${idx === 0 && !isTie ? '👑 ' : ''}${shapeSym} ${p.name}${p.isAI ? ' 🤖' : ''}
+      </span>
+      <span class="go-row-pts">${p.score} pts</span>`;
+    results.appendChild(row);
+  });
+
+  document.getElementById('gameover-overlay').classList.add('visible');
+}
+
+function restartGame() {
+  document.getElementById('gameover-overlay').classList.remove('visible');
+  showScreen('home');
+}
+
+// ===================== INIT =====================
+showScreen('home');
+</script>
+</body>
+</html>
