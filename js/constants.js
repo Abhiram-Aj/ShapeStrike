@@ -4,7 +4,7 @@ const SHAPES = {
   circle:   { sym:'●', label:'Circle'   },
   square:   { sym:'■', label:'Square'   },
   triangle: { sym:'▲', label:'Triangle' },
-  star:     { sym:'��', label:'Star'     },
+  star:     { sym:'★', label:'Star'     },
 };
 
 const SHAPES_3P = ['circle', 'square', 'triangle'];
